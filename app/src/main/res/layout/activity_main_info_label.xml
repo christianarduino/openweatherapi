@@ -1,0 +1,76 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content">
+
+
+    <TextView
+        android:id="@+id/maxTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Massima"
+        android:textSize="16sp"
+        android:textStyle="bold"
+
+        app:layout_constraintStart_toStartOf="@+id/minTextView"
+        app:layout_constraintTop_toBottomOf="@+id/minTextView" />
+
+    <TextView
+        android:id="@+id/minTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="Minima"
+        android:textSize="16sp"
+        android:textStyle="bold"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/maxValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="17° C"
+
+        app:layout_constraintBottom_toBottomOf="@+id/maxTextView"
+        app:layout_constraintStart_toStartOf="@+id/minValue"
+        app:layout_constraintTop_toTopOf="@+id/maxTextView" />
+
+    <TextView
+        android:id="@+id/minValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:text="17° C"
+
+        app:layout_constraintBottom_toBottomOf="@+id/minTextView"
+        app:layout_constraintStart_toEndOf="@+id/minTextView"
+        app:layout_constraintTop_toTopOf="@+id/minTextView" />
+
+
+    <TextView
+        android:id="@+id/humidityTextView"
+        style="@style/information"
+        android:layout_marginStart="40dp"
+        android:text="Umidità"
+
+        app:layout_constraintBottom_toBottomOf="@+id/minValue"
+        app:layout_constraintStart_toEndOf="@+id/minValue"
+        app:layout_constraintTop_toTopOf="@+id/minValue" />
+
+    <TextView
+        android:id="@+id/humidityValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:text=""
+
+        app:layout_constraintBottom_toBottomOf="@+id/humidityTextView"
+        app:layout_constraintStart_toEndOf="@+id/humidityTextView"
+        app:layout_constraintTop_toTopOf="@+id/humidityTextView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
