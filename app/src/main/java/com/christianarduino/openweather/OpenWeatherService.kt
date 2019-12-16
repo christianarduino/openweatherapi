@@ -16,7 +16,7 @@ interface OpenWeatherReceiver {
     fun receive(result: OpenWeatherResult)
 }
 
-class OpenWeatherService(private var lat: String, private var long: String) {
+class OpenWeatherService(private var lat: Double, private var long: Double) {
     private val baseUrlWeather = "https://api.openweathermap.org/data/2.5/weather?"
     private val baseUrlForecast = "https://api.openweathermap.org/data/2.5/forecast?"
     private val appId = "9b71735de964547d642787f42de580f8"

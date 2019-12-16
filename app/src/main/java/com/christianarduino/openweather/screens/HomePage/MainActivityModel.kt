@@ -12,7 +12,7 @@ import java.io.IOException
 
 sealed class SingleDayEvent {
     object OnRequestLocationPermission : SingleDayEvent()
-    data class OnPermissionAllow(var lat: String, var long: String) : SingleDayEvent()
+    data class OnPermissionAllow(var lat: Double, var long: Double) : SingleDayEvent()
 }
 
 sealed class SingleDayState {

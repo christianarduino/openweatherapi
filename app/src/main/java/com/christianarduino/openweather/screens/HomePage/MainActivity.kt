@@ -10,6 +10,7 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -129,6 +130,9 @@ class MainActivity : AppCompatActivity() {
         otherPrev.visibility = View.VISIBLE
         otherPrev.setOnClickListener {
             val intent = Intent(this, WeeklyPrevisionActivity::class.java)
+            Log.d("OpenWeatherResponse", weather.coord.lat.toString())
+            intent.putExtra("lat", weather.coord.lat)
+            intent.putExtra("lon", weather.coord.lon)
             startActivity(intent)
         }
     }
@@ -143,8 +147,8 @@ class MainActivity : AppCompatActivity() {
                     } else {
                         viewModel.send(
                             SingleDayEvent.OnPermissionAllow(
-                                location.latitude.toString(),
-                                location.longitude.toString()
+                                location.latitude,
+                                location.longitude
                             )
                         )
                     }

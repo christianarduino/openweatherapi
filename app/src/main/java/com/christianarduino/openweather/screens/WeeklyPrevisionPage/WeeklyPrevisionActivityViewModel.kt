@@ -11,7 +11,8 @@ import com.christianarduino.openweather.model.WeeklyPrevisionResponse
 import java.io.IOException
 
 sealed class WeeklyPrevisionEvent {
-    data class makeRequest(val lat: String, val long: String) : WeeklyPrevisionEvent()
+    object onActivityOpen: WeeklyPrevisionEvent()
+    data class makeRequest(val lat: Double, val long: Double) : WeeklyPrevisionEvent()
     data class showData(val list: List<WeeklyPrevisionResponse>) : WeeklyPrevisionEvent()
 }
 
@@ -32,6 +33,7 @@ class WeeklyPrevisionActivityViewModel : ViewModel() {
 
     fun send(event: WeeklyPrevisionEvent) {
         when (event) {
+            is WeeklyPrevisionEvent.onActivityOpen -> weeklyState.postValue(WeeklyPrevisionState.InProgress)
             is WeeklyPrevisionEvent.makeRequest -> {
                 weeklyService = OpenWeatherService(event.lat, event.long)
                 weeklyService.loadWeatherData(
