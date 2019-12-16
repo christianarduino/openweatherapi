@@ -7,17 +7,17 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProviders
 import com.christianarduino.openweather.R
-import com.christianarduino.openweather.screens.WeeklyPrevisionPage.WeeklyPrevisionActivity
 import com.christianarduino.openweather.model.OpenWeatherResponse
+import com.christianarduino.openweather.screens.WeeklyPrevisionPage.WeeklyPrevisionActivity
 import com.google.android.gms.location.*
 import kotlin.math.roundToInt
 
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        viewModel.send(OpenWeatherEvent.OnRequestLocationPermission)
+        viewModel.send(SingleDayEvent.OnRequestLocationPermission)
     }
 
     private fun setupViews() {
@@ -77,8 +77,8 @@ class MainActivity : AppCompatActivity() {
     private fun setupObserver() {
         viewModel.observe(this) { openWeatherState ->
             when (openWeatherState) {
-                is OpenWeatherState.InProgress -> getLastLocation()
-                is OpenWeatherState.Success -> onSuccessView(openWeatherState.weather)
+                is SingleDayState.InProgress -> getLastLocation()
+                is SingleDayState.Success -> onSuccessView(openWeatherState.weather)
             }
         }
     }
@@ -142,7 +142,7 @@ class MainActivity : AppCompatActivity() {
                         requestNewLocationData()
                     } else {
                         viewModel.send(
-                            OpenWeatherEvent.OnPermissionAllow(
+                            SingleDayEvent.OnPermissionAllow(
                                 location.latitude.toString(),
                                 location.longitude.toString()
                             )

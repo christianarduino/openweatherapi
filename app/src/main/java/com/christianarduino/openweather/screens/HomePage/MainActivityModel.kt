@@ -10,49 +10,51 @@ import com.christianarduino.openweather.OpenWeatherService
 import com.christianarduino.openweather.model.OpenWeatherResponse
 import java.io.IOException
 
-sealed class OpenWeatherEvent {
-    object OnRequestLocationPermission : OpenWeatherEvent()
-    data class OnPermissionAllow(var lat: String, var long: String): OpenWeatherEvent()
+sealed class SingleDayEvent {
+    object OnRequestLocationPermission : SingleDayEvent()
+    data class OnPermissionAllow(var lat: String, var long: String) : SingleDayEvent()
 }
 
-sealed class OpenWeatherState {
-    object InProgress : OpenWeatherState()
-    data class Error(val error: IOException): OpenWeatherState()
-    data class Success(val weather: OpenWeatherResponse): OpenWeatherState()
+sealed class SingleDayState {
+    object InProgress : SingleDayState()
+    data class Error(val error: IOException) : SingleDayState()
+    data class Success(val weather: OpenWeatherResponse) : SingleDayState()
 }
 
-class MainActivityModel: ViewModel() {
+class MainActivityModel : ViewModel() {
 
     private lateinit var openWeatherService: OpenWeatherService
-    private val openWeatherState = MutableLiveData<OpenWeatherState>()
+    private val openWeatherState = MutableLiveData<SingleDayState>()
 
-    fun observe(owner: LifecycleOwner, observer: (OpenWeatherState) -> Unit) {
+    fun observe(owner: LifecycleOwner, observer: (SingleDayState) -> Unit) {
         openWeatherState.observe(owner, Observer { it?.let(observer::invoke) })
     }
 
-    fun send(event: OpenWeatherEvent) {
+    fun send(event: SingleDayEvent) {
         when (event) {
-            is OpenWeatherEvent.OnRequestLocationPermission -> openWeatherState.postValue(OpenWeatherState.InProgress)
-            is OpenWeatherEvent.OnPermissionAllow -> {
+            is SingleDayEvent.OnRequestLocationPermission -> openWeatherState.postValue(
+                SingleDayState.InProgress
+            )
+            is SingleDayEvent.OnPermissionAllow -> {
                 openWeatherService =
                     OpenWeatherService(
                         event.lat,
                         event.long
                     )
-                openWeatherService.loadData(object :
+                openWeatherService.loadWeatherData(false, object :
                     OpenWeatherReceiver {
                     override fun receive(result: OpenWeatherResult) {
-                        when(result) {
+                        when (result) {
                             is OpenWeatherResult.Error -> {
                                 openWeatherState.postValue(
-                                    OpenWeatherState.Error(
+                                    SingleDayState.Error(
                                         error = result.error
                                     )
                                 )
                             }
-                            is OpenWeatherResult.Success -> {
+                            is OpenWeatherResult.SuccessOpenWeather -> {
                                 openWeatherState.postValue(
-                                    OpenWeatherState.Success(
+                                    SingleDayState.Success(
                                         weather = result.weather
                                     )
                                 )
